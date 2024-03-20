@@ -1,0 +1,57 @@
+---
+---
+
+
+<main class="flex flex-col min-h-[90vh]">
+  <section class="flex-grow">
+    <div class="flex flex-col justify-center items-center p-4">
+      <h1>Información de Paises</h1>
+      <form class="flex flex-col justify-center items-center mt-4 bg-zinc-600 p-6 rounded-md" id="form">
+        <label>
+          Ingresa un pais
+          <input type="text" placeholder="aqui..." id="InputCountry" class="bg-zinc-800 ml-1 p-1 rounded-sm w-48">
+        </label>
+        <small class="text-gray-200 pt-1">Por ejemplo: Canada</small>
+        <button class="p-2 bg-zinc-800 rounded-md mt-4 hover:bg-zinc-700 w-48 "id="button">Busque su pais</button>
+      </form>
+      <div>
+        <pre id="results"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+        
+
+<script>
+const OPTIONS = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Key': 'c0bc59916bmsh58d046111a5c5b8p113817jsn569204e8a010',
+    'X-RapidAPI-Host': 'foreca-weather.p.rapidapi.com'
+  }
+};
+
+const fetchApiOpts = (query)=>{
+    return fetch(
+      `https://foreca-weather.p.rapidapi.com/location/search/${query}`, OPTIONS
+    )
+    .then((res)=> res.json())
+    .catch((err)=> console.error(err));
+}
+
+  const form = document.querySelector('#form');
+  const results = document.querySelector('#results');
+
+    form.addEventListener('click',async(event)=>{
+      event.preventDefault();
+      const inputValue = document.querySelector('#InputCountry').value;
+      if(inputValue == '') return;
+
+      const infoP = await fetchApiOpts(inputValue);
+
+      if(infoP){
+        results.innerHTML = JSON.stringify(infoP, null, 2);
+      }
+    })
+    
+</script>
